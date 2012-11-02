@@ -10,22 +10,28 @@ module OmniAuth
       autoload :XMLSecurity,      'omniauth/strategies/saml/xml_security'
       autoload :MetadataResponse, 'omniauth/strategies/saml/metadata_response'
 
-      option :name_identifier_format, "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress"
+      option :name_identifier_format,
+        "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress"
 
       def request_phase
-        request = OmniAuth::Strategies::SAML::AuthRequest.new
-        redirect(request.create(options))
+        ar = OmniAuth::Strategies::SAML::AuthRequest.new
+        redirect(ar.create(options, request))
       end
 
       def callback_phase
         begin
-          response = OmniAuth::Strategies::SAML::AuthResponse.new(request.params['SAMLResponse'])
+          response = OmniAuth::Strategies::SAML::AuthResponse.new(
+            request.params['SAMLResponse'])
           response.settings = options
 
           @name_id  = response.name_id
           @attributes = response.attributes
 
-          return fail!(:invalid_ticket, ValidationError.new('Invalid SAML Ticket')) if @name_id.nil? || @name_id.empty? || !response.valid?
+          if @name_id.nil? || @name_id.empty? || !response.valid?
+            return fail!(:invalid_ticket,
+              ValidationError.new('Invalid SAML Ticket'))
+          end
+
           super
         rescue ArgumentError => e
           fail!(:invalid_ticket, ValidationError.new('Invalid SAML Response'))
@@ -35,7 +41,8 @@ module OmniAuth
       def other_phase
         if on_path?("#{request_path}/metadata")
           response = OmniAuth::Strategies::SAML::MetadataResponse.new
-          Rack::Response.new(response.create(options), 200, { "Content-Type" => "application/xml" })
+          Rack::Response.new(response.create(options, request), 200,
+            { "Content-Type" => "application/xml" })
         else
           call_app!
         end
