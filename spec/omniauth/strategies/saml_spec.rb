@@ -55,18 +55,18 @@ describe OmniAuth::Strategies::SAML, :type => :strategy do
 
       it "should set the raw info to all attributes" do
         auth_hash['extra']['raw_info'].to_hash.should == {
-          'forename' => 'Steven',
-          'surname' => 'Anderson',
-          'address_1' => '24 Made Up Drive',
-          'address_2' => nil,
-          'companyName' => 'Test Company Ltd',
-          'postcode' => 'XX2 4XX',
-          'city' => 'Newcastle',
-          'country' => 'United Kingdom',
-          'userEmailID' => 'steve@example.com',
-          'county' => 'TYNESIDE',
-          'versionID' => '1',
-          'bundleID' => '1'
+          'forename'      => 'Steven',
+          'surname'       => 'Anderson',
+          'address_1'     => '24 Made Up Drive',
+          'address_2'     => nil,
+          'company_name'  => 'Test Company Ltd',
+          'postcode'      => 'XX2 4XX',
+          'city'          => 'Newcastle',
+          'country'       => 'United Kingdom',
+          'user_email_id' => 'steve@example.com',
+          'county'        => 'TYNESIDE',
+          'version_id'    => '1',
+          'bundle_id'     => '1'
         }
       end
     end

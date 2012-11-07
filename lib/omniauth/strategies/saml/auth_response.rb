@@ -45,8 +45,7 @@ module OmniAuth
               stmt_element.elements.each do |attr_element|
                 name  = attr_element.attributes["Name"]
                 value = strip(attr_element.elements.first.text)
-
-                result[name] = result[name.to_sym] =  value
+                result[underscore(name).to_sym] = value
               end
             end
           end
@@ -132,6 +131,13 @@ module OmniAuth
         def strip(string)
           return string unless string
           string.gsub(/^\s+/, '').gsub(/\s+$/, '')
+        end
+
+        # ripped from ActiveSupport
+        def underscore(string)
+          return string unless string
+          string.gsub(/::/, '/').gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
+                 gsub(/([a-z\d])([A-Z])/,'\1_\2').tr("-", "_").downcase
         end
 
         def xpath(path)

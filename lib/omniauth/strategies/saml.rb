@@ -52,10 +52,10 @@ module OmniAuth
 
       info do
         {
-          :name  => @attributes[:name],
-          :email => @attributes[:email] || @attributes[:mail],
+          :name       => @attributes[:name],
+          :email      => @attributes[:email] || @attributes[:mail],
           :first_name => @attributes[:first_name] || @attributes[:firstname],
-          :last_name => @attributes[:last_name] || @attributes[:lastname]
+          :last_name  => @attributes[:last_name] || @attributes[:lastname]
         }
       end
 
